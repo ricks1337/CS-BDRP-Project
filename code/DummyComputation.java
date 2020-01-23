@@ -1,4 +1,4 @@
-package mypackage;
+package code;
 
 import org.apache.giraph.graph.BasicComputation;
 import org.apache.giraph.graph.Vertex;
