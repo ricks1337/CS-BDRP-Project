@@ -94,7 +94,7 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
                     HashMap<Integer,Long> updateClassMap = new HashMap<Integer,Long>(); 
                     updateClassMap.put(message_l0.get(),message_w0.get());
                     updateClassMap.put(message_l1.get(),message_w1.get());
-                    vertex.getValue().setClasses(sorted_mess);
+                    vertex.getValue().setClasses(updateClassMap);
                 }
 
                 //Revisar si se tiene que cambiar de clase
