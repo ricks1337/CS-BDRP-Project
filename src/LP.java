@@ -36,7 +36,7 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
 
         // Variables for messages
         Iterator<Edge<LongWritable,LongWritable>> iterator = vertex.getEdges().iterator();
-        Edge<LongWritable,LongWritable> edges_it = iterator.next();
+
 
         MapWritable map = new MapWritable();
         IntWritable key = new IntWritable(0);
@@ -47,7 +47,7 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
         {
             while(!iterator.hasNext())
             {
-
+                Edge<LongWritable,LongWritable> edges_it = iterator.next();
                 map.put(key,vertex.getValue().getActualCommunity()); //Actual label
                 map.put(key2,edges_it.getValue()); //Edge weight
 
@@ -92,6 +92,7 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
                 //Send messages
                     while(!iterator.hasNext())
                     {
+                        Edge<LongWritable,LongWritable> edges_it = iterator.next();
 
                         map.put(key,vertex.getValue().getActualCommunity()); //Actual label
                         map.put(key2,edges_it.getValue()); //Edge weight
