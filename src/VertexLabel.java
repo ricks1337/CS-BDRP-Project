@@ -70,4 +70,8 @@ public class VertexLabel implements Writable
         return new LongWritable(this.actComm);
     }5
 
+    public HashMap<Integer,Long> getClassTable() {
+        return new HashMap<Integer,Long>(this.classes);
+    }
+
 }
