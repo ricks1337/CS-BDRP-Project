@@ -26,46 +26,115 @@ import java.util.stream.Collectors;
 public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritable, MapWritable>
 {
     //Num iterations
-    public static final String NUMBER_ITERATIONS = "LP.numberiterations";
-    public static final int DEFAULT_ITERATIONS = 20;
+    //public static final String NUMBER_ITERATIONS = "LP.numberiterations"; RR - do we use them?
+    //public static final int DEFAULT_ITERATIONS = 20; RR - do we use them?
 
     public void compute(Vertex<LongWritable, VertexLabel, LongWritable> vertex, Iterable<MapWritable> messages) throws IOException
     {
-        HashMap<Integer,Long> mapMess = new HashMap<Integer,Long>();
-        Iterable<Edge<LongWritable,LongWritable>> edges = vertex.getEdges();
+        //HashMap<Integer,Long> mapMess = new HashMap<Integer,Long>(); RR - do we use them?
+        //Iterable<Edge<LongWritable,LongWritable>> edges = vertex.getEdges(); RR - better inside?
 
         // Variables for messages
-        Iterator<Edge<LongWritable,LongWritable>> iterator = vertex.getEdges().iterator();
-        Edge<LongWritable,LongWritable> edges_it = iterator.next();
+        //Iterator<Edge<LongWritable,LongWritable>> iterator = vertex.getEdges().iterator();
+        //Edge<LongWritable,LongWritable> edges_it = iterator.next();
 
-        MapWritable map = new MapWritable();
-        IntWritable key = new IntWritable(0);
-        IntWritable key2 = new IntWritable(1);
+        //MapWritable map = new MapWritable(); 
+        //IntWritable key = new IntWritable(0);
+        //IntWritable key2 = new IntWritable(1); //RR-LongWriteable??
 
         // Superstep == 0
         if (getSuperstep() == 0)
         {
-            while(!iterator.hasNext())
+            //for all edges
+            Iterator<Edge<LongWritable,LongWritable>> iterator_e = vertex.getEdges().iterator();
+            while(!iterator_e.hasNext())
             {
+                Edge<LongWritable,LongWritable> edge = iterator_e.next();
+                //create message with current class and weight
+                MapWritable map = new MapWritable();
+                IntWritable key0 = new IntWritable(0);
+                IntWritable key1 = new IntWritable(1);
+                IntWritable key2 = new IntWritable(2);
+                IntWritable key3 = new IntWritable(3);
 
-                map.put(key,vertex.getValue().getActualCommunity()); //Actual label
-                map.put(key2,edges_it.getValue()); //Edge weight
+                map.put(key0,new Random().nextInt(2)); //Initialize the node randomly
+                map.put(key1,edge.getValue()); //Edge weight 
+                map.put(key2,0); //Previous label set to 0
+                map.put(key3,0); //Edge weight to 0 so it doesn't affect
 
-                sendMessage(edges_it.getTargetVertexId(), map);
+                sendMessage(edge.getTargetVertexId(), map);
             }
 
         }
         else {
-
             // No messages
             if (!messages.iterator().hasNext())
             {
-                //?¿
+                vertex.voteToHalt(); // RR -> Si no hay mensaje no se llama el método compute o si? igual no afecta tenerlo
             }
             //New messages
             else
+            {
+                //Actualizar valor de hashmap en el vértice
+                Iterator iterator_m = messages.iterator();
+                while (!iterator_m.hasNext())
                 {
+                    //obtain message values
+                    MapWritable message = ((MapWritable) iterator_m.next());
+                    IntWritable key0 = new IntWritable(0);
+                    IntWritable key1 = new IntWritable(1);
+                    IntWritable key2 = new IntWritable(2);
+                    IntWritable key3 = new IntWritable(3);
+                    IntWritable message_l0 = ((IntWritable) message.get(key0));
+                    LongWritable message_w0 = ((LongWritable) message.get(key1));
+                    IntWritable message_l1 = ((IntWritable) message.get(key2));
+                    LongWritable message_w1 = ((LongWritable) message.get(key3));
 
+                    //Create hashmap and update vertex table
+                    HashMap<Integer,Long> updateClassMap = new HashMap<Integer,Long>(); 
+                    updateClassMap.put(message_l0.get(),message_w0.get());
+                    updateClassMap.put(message_l1.get(),message_w1.get());
+                    vertex.getValue().setClasses(sorted_mess);
+                }
+
+                //Revisar si se tiene que cambiar de clase
+                HashMap<Integer,Long> currClasses = vertex.getValue().getClassTable();
+                HashMap<Integer,Long> sortedCurrClasses = getMostFrequent(currClasses);
+
+                // get classes
+                LongWritable currClass = vertex.getValue().getActualCommunity()
+                LongWritable maxClass = sortedCurrClasses.keySet().iterator().next();
+
+                if(currClass!=maxClass){
+                    //Si se cambia de clase enviar mensaje a todos los edges
+                    //for all edges
+                    Iterator<Edge<LongWritable,LongWritable>> iterator_e = vertex.getEdges().iterator();
+                    while(!iterator_e.hasNext())
+                    {
+                        Edge<LongWritable,LongWritable> edge = iterator_e.next();
+                        //create message with current class and weight
+                        MapWritable map = new MapWritable();
+                        IntWritable key0 = new IntWritable(0);
+                        IntWritable key1 = new IntWritable(1);
+                        IntWritable key2 = new IntWritable(2);
+                        IntWritable key3 = new IntWritable(3);
+
+                        map.put(key0,maxClass); //New label 
+                        map.put(key1,edge.getValue()); //Edge weight 
+                        map.put(key2,currClass); //Previous label 
+                        map.put(key3,edge.getValue()*-1); //Edge weight to -w to change vote
+
+                        sendMessage(edge.getTargetVertexId(), map);
+                    }
+                    //set new community
+                    vertex.getValue().setActualCommunity(maxClass);
+                } else {
+                    //Si no se cambia, votar por parar
+                    vertex.voteToHalt();
+                }
+                    
+                    
+                /*
                 Iterator iterator_v = messages.iterator();
                 while (!iterator_v.hasNext())
                 {
@@ -77,6 +146,7 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
                     LongWritable mess_edge = ((LongWritable) new_mess.get(key_2));
 
                     //Look for most frequent
+                    HashMap<Integer,Long> mapMess = new HashMap<Integer,Long>(); 
                     mapMess.put(mess_label.get(),mess_edge.get());
                     HashMap<Integer,Long> sorted_mess = getMostFrequent(mapMess);
 
@@ -99,7 +169,7 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
                         sendMessage(edges_it.getTargetVertexId(), map);
                     }
 
-                //comm =
+                //comm =*/
             }
         }
     }
@@ -113,6 +183,6 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
 
-    return mapMess;
+    return sorted; 
     }
 }
