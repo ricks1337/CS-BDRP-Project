@@ -68,6 +68,6 @@ public class VertexLabel implements Writable
     // Get methods
     public LongWritable getActualCommunity() {
         return new LongWritable(this.actComm);
-    }
+    }5
 
 }
