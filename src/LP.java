@@ -162,6 +162,7 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
                 //Send messages
                     while(!iterator.hasNext())
                     {
+                        Edge<LongWritable,LongWritable> edges_it = iterator.next();
 
                         map.put(key,vertex.getValue().getActualCommunity()); //Actual label
                         map.put(key2,edges_it.getValue()); //Edge weight
