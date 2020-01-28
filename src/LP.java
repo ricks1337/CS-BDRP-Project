@@ -57,10 +57,10 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
                 IntWritable key2 = new IntWritable(2);
                 IntWritable key3 = new IntWritable(3);
 
-                map.put(key0,new Random().nextInt(2)); //Initialize the node randomly
+                map.put(key0,new LongWritable(new Random().nextInt(2))); //Initialize the node randomly
                 map.put(key1,edge.getValue()); //Edge weight 
-                map.put(key2,0); //Previous label set to 0
-                map.put(key3,0); //Edge weight to 0 so it doesn't affect
+                map.put(key2,new LongWritable(0)); //Previous label set to 0
+                map.put(key3,new LongWritable(0)); //Edge weight to 0 so it doesn't affect
 
                 sendMessage(edge.getTargetVertexId(), map);
             }
@@ -102,10 +102,10 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
                 HashMap<Integer,Long> sortedCurrClasses = getMostFrequent(currClasses);
 
                 // get classes
-                LongWritable currClass = vertex.getValue().getActualCommunity()
-                LongWritable maxClass = sortedCurrClasses.keySet().iterator().next();
+                LongWritable currClass = vertex.getValue().getActualCommunity();
+                Long maxClass = sortedCurrClasses.get(sortedCurrClasses.keySet().iterator().next());
 
-                if(currClass!=maxClass){
+                if(currClass.get()!=maxClass){
                     //Si se cambia de clase enviar mensaje a todos los edges
                     //for all edges
                     Iterator<Edge<LongWritable,LongWritable>> iterator_e = vertex.getEdges().iterator();
@@ -119,15 +119,16 @@ public class LP extends BasicComputation<LongWritable, VertexLabel , LongWritabl
                         IntWritable key2 = new IntWritable(2);
                         IntWritable key3 = new IntWritable(3);
 
-                        map.put(key0,maxClass); //New label 
+                        map.put(key0,new LongWritable(maxClass)); //New label
                         map.put(key1,edge.getValue()); //Edge weight 
-                        map.put(key2,currClass); //Previous label 
-                        map.put(key3,edge.getValue()*-1); //Edge weight to -w to change vote
+                        map.put(key2,currClass); //Previous label
+                        Long valueLong = (Long) edge.getValue().get()*-1;
+                        map.put(key3,new LongWritable(valueLong)); //Edge weight to -w to change vote
 
                         sendMessage(edge.getTargetVertexId(), map);
                     }
                     //set new community
-                    vertex.getValue().setActualCommunity(maxClass);
+                    vertex.getValue().setActualCommunity(new LongWritable(maxClass));
                 } else {
                     //Si no se cambia, votar por parar
                     vertex.voteToHalt();
