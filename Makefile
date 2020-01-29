@@ -1,4 +1,5 @@
-filename := SPN-Giraph.txt
+filename := data/SPN-Giraph.txt
+filename_hdfs := SPN-Giraph.txt
 java := src/*.java
 java_name := LP
 run_container:
@@ -10,11 +11,11 @@ compile:
 
 data_hdfs:
 	$(eval containerid := $(shell docker ps -a -q))
-	docker exec -it $(containerid) bash -c "cd /myhome/ && /usr/local/hadoop/bin/hdfs dfs -put $(filename) ./$(filename)"
+	docker exec -it $(containerid) bash -c "cd /myhome/ && /usr/local/hadoop/bin/hdfs dfs -put $(filename) ./$(filename_hdfs)"
 
 run:
 	$(eval containerid := $(shell docker ps -a -q))
-	docker exec -it $(containerid) bash -c "cd /myhome/ && /usr/local/hadoop/bin/hadoop jar myjar.jar org.apache.giraph.GiraphRunner src.$(java_name) --yarnjars myjar.jar --workers 1 --vertexInputFormat src.LPVertexTextInputFormat --vertexInputPath ./$(filename) -vertexOutputFormat org.apache.giraph.io.formats.IdWithValueTextOutputFormat --outputPath /user/root/lp-output"
+	docker exec -it $(containerid) bash -c "cd /myhome/ && /usr/local/hadoop/bin/hadoop jar myjar.jar org.apache.giraph.GiraphRunner src.$(java_name) --yarnjars myjar.jar --workers 1 --vertexInputFormat src.LPVertexTextInputFormat --vertexInputPath ./$(filename_hdfs) -vertexOutputFormat org.apache.giraph.io.formats.IdWithValueTextOutputFormat --outputPath /user/root/lp-output"
 
 #podemos cambiar el directorio de output en hdfs
 result:

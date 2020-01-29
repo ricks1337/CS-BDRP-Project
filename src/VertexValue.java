@@ -1,4 +1,4 @@
-//package src;
+package src;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.io.MapWritable;

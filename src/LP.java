@@ -1,4 +1,4 @@
-//package src;
+package src;
 //import org.apache.giraph.comm.WorkerClientRequestProcessor;
 import org.apache.giraph.graph.BasicComputation;
 //import org.apache.giraph.graph.GraphState;
