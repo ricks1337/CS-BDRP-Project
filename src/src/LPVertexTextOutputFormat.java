@@ -14,7 +14,7 @@ public class LPVertexTextOutputFormat  extends TextVertexOutputFormat <LongWrita
     @Override
     public TextVertexWriter createVertexWriter(TaskAttemptContext taskAttemptContext) throws IOException, InterruptedException
     {
-        return null;
+        return new LPTextVertexLineWriter();
     }
 
     private class LPTextVertexLineWriter extends TextVertexWriterToEachLine

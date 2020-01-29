@@ -22,15 +22,15 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
      * Attributes
      */
     private int id;
-    private long actComm = Long.MAX_VALUE;
+    private long actComm = new Random().nextInt(2);
     private HashMap<Integer,Long> classes = new HashMap<Integer,Long> ();
 
     @Override
     public TextVertexReader createVertexReader(InputSplit inputSplit, TaskAttemptContext taskAttemptContext) throws IOException {
-        classes.put(0,Long.MAX_VALUE);
-        classes.put(1,Long.MAX_VALUE);
-        classes.put(2,Long.MAX_VALUE);
-        classes.put(3,Long.MAX_VALUE);
+        classes.put(0,Long.MIN_VALUE);
+        classes.put(1,Long.MIN_VALUE);
+        classes.put(2,Long.MIN_VALUE);
+        classes.put(3,Long.MIN_VALUE);
         return new VertexReader();
     }
 
