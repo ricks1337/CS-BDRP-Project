@@ -17,7 +17,7 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
     /**
      * Separator
      */
-    private static final Pattern SEPARATOR = Pattern.compile("[\t ]");
+    private static final Pattern SEPARATOR = Pattern.compile(",");
     /**
      * Attributes
      */
@@ -41,7 +41,7 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
         protected String[] preprocessLine(Text text) throws IOException
         {
             String[] tokens = SEPARATOR.split(text.toString());
-            id = Integer.parseInt(tokens[0].replace("[","").replace("]","").replace(",",""));
+            id = Integer.parseInt(tokens[0].replaceAll("\\s+","").replace("[","").replace("]","").replace(",",""));
             return tokens;
         }
 
@@ -57,14 +57,15 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
 
         @Override
         protected Iterable<Edge<LongWritable, FloatWritable>> getEdges(String[] strings) throws IOException {
+
             List<Edge<LongWritable, FloatWritable>> edges = Lists.newArrayList();
 
-            int n = 2;
-            while (n < strings.length-1)
+            for (int n =2;n < strings.length-1;n+=2)
             {
-                edges.add(EdgeFactory.create(new LongWritable(Long.parseLong(strings[n])),
-                        new FloatWritable(Long.parseLong(strings[n+1]))));
-                n = n+2;
+                LongWritable vid = new LongWritable(Long.parseLong(strings[n].replaceAll("\\s+","").replace("[","").replace("]","").replace(",","")));
+                FloatWritable edgeid = new FloatWritable(Long.parseLong(strings[n+1].replaceAll("\\s+","").replace("[","").replace("]","").replace(",","")));
+
+                edges.add(EdgeFactory.create(vid, edgeid));
             }
             return edges;
         }

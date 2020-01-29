@@ -35,7 +35,7 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
 
     public void compute(Vertex<LongWritable, VertexValue, FloatWritable> vertex, Iterable<MapWritable> messages) throws IOException
     {
-
+        System.out.println("ENTRO");
         //HashMap<Integer,Long> mapMess = new HashMap<Integer,Long>(); RR - do we use them?
         //Iterable<Edge<LongWritable,LongWritable>> edges = vertex.getEdges(); RR - better inside?
 

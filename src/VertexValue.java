@@ -16,6 +16,13 @@ public class VertexValue implements Writable
     private HashMap<Integer,Long> classes;
 
     //Constructor
+
+    public VertexValue() {
+
+        this.actComm = 0;
+        this.classes = new HashMap<Integer,Long>();
+    }
+
     public VertexValue(long currentCommunity, HashMap<Integer,Long> classes) {
 
         this.actComm = currentCommunity;
