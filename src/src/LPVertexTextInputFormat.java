@@ -22,8 +22,8 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
     /**
      * Attributes
      */
-    private int id;
-    private long actComm = new Random(System.nanoTime()).nextInt(5);
+    private long id;
+    private long actComm = new Random(System.nanoTime()).nextLong();
     private HashMap<Long,Float> classes = new HashMap<Long,Float> ();
 
     @Override
@@ -38,8 +38,8 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
         protected String[] preprocessLine(Text text) throws IOException
         {
             String[] tokens = SEPARATOR.split(text.toString());
-            id = Integer.parseInt(tokens[0].replaceAll("\\s+","").replace("[","").replace("]","").replace(",",""));
-            actComm = Integer.parseInt(tokens[1].replaceAll("\\s+","").replace("[","").replace("]","").replace(",",""));
+            id = Long.parseLong(tokens[0].replaceAll("\\s+","").replace("[","").replace("]","").replace(",",""));
+            actComm = Long.parseLong(tokens[1].replaceAll("\\s+","").replace("[","").replace("]","").replace(",",""));
             return tokens;
         }
 
