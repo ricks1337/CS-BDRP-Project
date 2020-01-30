@@ -131,8 +131,8 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                         map.put(key0,new LongWritable(maxClass)); //New label
                         map.put(key1,edge.getValue()); //Edge weight 
                         map.put(key2,currClass); //Previous label
-                        Long valueLong = (long) edge.getValue().get()*-1;
-                        map.put(key3,new LongWritable(valueLong)); //Edge weight to -w to change vote
+                        float valueLong = (float) edge.getValue().get()*-1;
+                        map.put(key3,new FloatWritable(valueLong)); //Edge weight to -w to change vote
 
                         sendMessage(edge.getTargetVertexId(), map);
                     }
