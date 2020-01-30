@@ -140,6 +140,9 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                     vertex.getValue().setActualCommunity(new LongWritable(maxClass));
                 }
                 // Finishes then votes to halt
+                System.out.println("ID: " + vertex.getId().toString() + " Community: " + vertex.getValue().getActualCommunity().get());
+                
+
                 vertex.voteToHalt();
                 /*
                 Iterator iterator_v = messages.iterator();
