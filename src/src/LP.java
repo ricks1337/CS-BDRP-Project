@@ -66,7 +66,7 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                 map.put(key0,vertex.getValue().getActualCommunity()); //Initialize the node randomly
                 map.put(key1,edge.getValue()); //Edge weight 
                 map.put(key2,new LongWritable(0)); //Previous label set to 0
-                map.put(key3,new LongWritable(0)); //Edge weight to 0 so it doesn't affect
+                map.put(key3,new FloatWritable(0)); //Edge weight to 0 so it doesn't affect
 
                 sendMessage(edge.getTargetVertexId(), map);                
             }
