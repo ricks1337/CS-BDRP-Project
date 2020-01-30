@@ -23,11 +23,23 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
      * Attributes
      */
     private int id;
+<<<<<<< HEAD
     private long actComm = new Random(System.nanoTime()).nextInt(5);
     private HashMap<Long,Float> classes = new HashMap<Long,Float> ();
 
     @Override
     public TextVertexReader createVertexReader(InputSplit inputSplit, TaskAttemptContext taskAttemptContext) throws IOException {
+=======
+    private long actComm = new Random().nextInt(2);
+    private HashMap<Integer,Long> classes = new HashMap<Integer,Long> ();
+
+    @Override
+    public TextVertexReader createVertexReader(InputSplit inputSplit, TaskAttemptContext taskAttemptContext) throws IOException {
+        classes.put(0,Long.MIN_VALUE);
+        classes.put(1,Long.MIN_VALUE);
+        classes.put(2,Long.MIN_VALUE);
+        classes.put(3,Long.MIN_VALUE);
+>>>>>>> 3dd093d0b0913f3f86bcf4e08dfb918076a76a3b
         return new VertexReader();
     }
 
