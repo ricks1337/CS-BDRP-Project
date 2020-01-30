@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
+import java.lang.*;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.giraph.GiraphRunner;
 
@@ -35,7 +36,6 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
 
     public void compute(Vertex<LongWritable, VertexValue, FloatWritable> vertex, Iterable<MapWritable> messages) throws IOException
     {
-        System.out.println("ENTRO");
         //HashMap<Integer,Long> mapMess = new HashMap<Integer,Long>(); RR - do we use them?
         //Iterable<Edge<LongWritable,LongWritable>> edges = vertex.getEdges(); RR - better inside?
 
@@ -50,9 +50,10 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
         // Superstep == 0
         if (getSuperstep() == 0)
         {
+            System.out.println("ENTRO-0");
             //for all edges
             Iterator<Edge<LongWritable,FloatWritable>> iterator_e = vertex.getEdges().iterator();
-            while(!iterator_e.hasNext())
+            while(iterator_e.hasNext())
             {
                 Edge<LongWritable,FloatWritable> edge = iterator_e.next();
                 //create message with current class and weight
@@ -62,29 +63,30 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                 IntWritable key2 = new IntWritable(2);
                 IntWritable key3 = new IntWritable(3);
 
-                map.put(key0,new LongWritable(new Random().nextInt(2))); //Initialize the node randomly
+                map.put(key0,vertex.getValue().getActualCommunity()); //Initialize the node randomly
                 map.put(key1,edge.getValue()); //Edge weight 
                 map.put(key2,new LongWritable(0)); //Previous label set to 0
                 map.put(key3,new LongWritable(0)); //Edge weight to 0 so it doesn't affect
 
-                sendMessage(edge.getTargetVertexId(), map);
-                System.out.println("!!!!");
-                System.out.println("EDGE_MAP: "+map.get(0)+" ,"+map.get(1)+" ,"+map.get(2)+" ,"+map.get(3));
+                sendMessage(edge.getTargetVertexId(), map);                
             }
 
         }
         else {
+            System.out.println("ENTRO-Otro");
             // No messages
             if (!messages.iterator().hasNext())
             {
+                System.out.println("ENTRO-Otrosin");
                 vertex.voteToHalt(); // RR -> Si no hay mensaje no se llama el metodo compute o si? igual no afecta tenerlo
             }
             //New messages
             else
             {
+                System.out.println("ENTRO-Otrocon");
                 //Actualizar valor de hashmap en el vertice
                 Iterator iterator_m = messages.iterator();
-                while (!iterator_m.hasNext())
+                while (iterator_m.hasNext())
                 {
                     //obtain message values
                     MapWritable message = ((MapWritable) iterator_m.next());
@@ -92,20 +94,20 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                     IntWritable key1 = new IntWritable(1);
                     IntWritable key2 = new IntWritable(2);
                     IntWritable key3 = new IntWritable(3);
-                    IntWritable message_l0 = ((IntWritable) message.get(key0));
-                    LongWritable message_w0 = ((LongWritable) message.get(key1));
-                    IntWritable message_l1 = ((IntWritable) message.get(key2));
-                    LongWritable message_w1 = ((LongWritable) message.get(key3));
+                    LongWritable message_l0 = ((LongWritable) message.get(key0));
+                    FloatWritable message_w0 = ((FloatWritable) message.get(key1));
+                    LongWritable message_l1 = ((LongWritable) message.get(key2));
+                    FloatWritable message_w1 = ((FloatWritable) message.get(key3));
 
                     //Create hashmap and update vertex table
-                    HashMap<Integer,Long> updateClassMap = new HashMap<Integer,Long>(); 
+                    HashMap<Long,Float> updateClassMap = new HashMap<Long,Float>(); 
                     updateClassMap.put(message_l0.get(),message_w0.get());
                     updateClassMap.put(message_l1.get(),message_w1.get());
                     vertex.getValue().setClasses(updateClassMap);
                 }
 
                 //Revisar si se tiene que cambiar de clase
-                HashMap<Integer,Long> currClasses = vertex.getValue().getClassTable();
+                HashMap<Long,Float> currClasses = vertex.getValue().getClassTable();
                 //HashMap<Integer,Long> sortedCurrClasses = getMostFrequent(currClasses);
 
                 // get classes
@@ -116,7 +118,7 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                     //Si se cambia de clase enviar mensaje a todos los edges
                     //for all edges
                     Iterator<Edge<LongWritable,FloatWritable>> iterator_e = vertex.getEdges().iterator();
-                    while(!iterator_e.hasNext())
+                    while(iterator_e.hasNext())
                     {
                         Edge<LongWritable,FloatWritable> edge = iterator_e.next();
                         //create message with current class and weight
@@ -139,7 +141,6 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                 }
                 // Finishes then votes to halt
                 vertex.voteToHalt();
-                    
                 /*
                 Iterator iterator_v = messages.iterator();
                 while (!iterator_v.hasNext())
@@ -182,20 +183,22 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
     }
 
     //Most frequent label
-    private Long getMostFrequent(HashMap<Integer,Long> mapMess)
+    private Long getMostFrequent(HashMap<Long,Float> mapMess)
     {
-       Long maxValue = -Long.MAX_VALUE;
+       Long maxClass = Long.MIN_VALUE;
+       Float maxValue = Float.MIN_VALUE;
 
-       for (Integer key: mapMess.keySet())
+       for (Long key: mapMess.keySet())
        {
            if(mapMess.get(key) >= maxValue)
            {
+               maxClass = key;
                maxValue = mapMess.get(key);
            }
        }
 
 
-    return maxValue;
+    return maxClass;
     }
 
 }

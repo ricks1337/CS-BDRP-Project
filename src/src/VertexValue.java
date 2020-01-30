@@ -13,17 +13,17 @@ import java.util.HashMap;
 public class VertexValue implements Writable
 {
     private long actComm;
-    private HashMap<Integer,Long> classes;
+    private HashMap<Long,Float> classes;
 
     //Constructor
 
     public VertexValue() {
 
         this.actComm = 0;
-        this.classes = new HashMap<Integer,Long>();
+        this.classes = new HashMap<Long,Float>();
     }
 
-    public VertexValue(long currentCommunity, HashMap<Integer,Long> classes) {
+    public VertexValue(long currentCommunity, HashMap<Long,Float> classes) {
 
         this.actComm = currentCommunity;
         this.classes = classes;
@@ -36,10 +36,10 @@ public class VertexValue implements Writable
 
         dataOutput.writeInt(this.classes.size());
 
-        for(Integer c:classes.keySet())
+        for(Long c:classes.keySet())
         {
-            dataOutput.writeInt(c);
-            dataOutput.writeLong(classes.get(c));
+            dataOutput.writeLong(c);
+            dataOutput.writeFloat(classes.get(c));
         }
     }
 
@@ -51,7 +51,7 @@ public class VertexValue implements Writable
 
         for (int i = 0; i < size; i++)
         {
-            this.classes.put(dataInput.readInt(),dataInput.readLong());
+            this.classes.put(dataInput.readLong(),dataInput.readFloat());
         }
     }
 
@@ -61,10 +61,10 @@ public class VertexValue implements Writable
         this.actComm  = actComm.get();
     }
 
-    public void setClasses(HashMap<Integer,Long> c) {
-        for (Integer key:c.keySet())
+    public void setClasses(HashMap<Long,Float> c) {
+        for (Long key:c.keySet())
         {
-            Long newV = c.get(key);
+            Float newV = c.get(key);
             if(this.classes.containsKey(key))
             {
                 newV+=classes.get(key);
@@ -78,8 +78,8 @@ public class VertexValue implements Writable
         return new LongWritable(this.actComm);
     }
 
-    public HashMap<Integer,Long> getClassTable() {
-        return new HashMap<Integer,Long>(this.classes);
+    public HashMap<Long,Float> getClassTable() {
+        return new HashMap<Long,Float>(this.classes);
     }
 
 }

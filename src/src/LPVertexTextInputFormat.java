@@ -1,6 +1,7 @@
 package src;
 import java.io.IOException;
 import java.util.*;
+import java.lang.*;
 
 import org.apache.giraph.edge.Edge;
 import org.apache.hadoop.io.*;
@@ -22,15 +23,11 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
      * Attributes
      */
     private int id;
-    private long actComm = Long.MAX_VALUE;
-    private HashMap<Integer,Long> classes = new HashMap<Integer,Long> ();
+    private long actComm = new Random(System.nanoTime()).nextInt(5);
+    private HashMap<Long,Float> classes = new HashMap<Long,Float> ();
 
     @Override
     public TextVertexReader createVertexReader(InputSplit inputSplit, TaskAttemptContext taskAttemptContext) throws IOException {
-        classes.put(0,Long.MAX_VALUE);
-        classes.put(1,Long.MAX_VALUE);
-        classes.put(2,Long.MAX_VALUE);
-        classes.put(3,Long.MAX_VALUE);
         return new VertexReader();
     }
 
@@ -42,6 +39,7 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
         {
             String[] tokens = SEPARATOR.split(text.toString());
             id = Integer.parseInt(tokens[0].replaceAll("\\s+","").replace("[","").replace("]","").replace(",",""));
+            actComm = Integer.parseInt(tokens[1].replaceAll("\\s+","").replace("[","").replace("]","").replace(",",""));
             return tokens;
         }
 
@@ -63,9 +61,9 @@ public class LPVertexTextInputFormat extends TextVertexInputFormat <LongWritable
             for (int n =2;n < strings.length-1;n+=2)
             {
                 LongWritable vid = new LongWritable(Long.parseLong(strings[n].replaceAll("\\s+","").replace("[","").replace("]","").replace(",","")));
-                FloatWritable edgeid = new FloatWritable(Long.parseLong(strings[n+1].replaceAll("\\s+","").replace("[","").replace("]","").replace(",","")));
+                FloatWritable edgeW = new FloatWritable(Long.parseLong(strings[n+1].replaceAll("\\s+","").replace("[","").replace("]","").replace(",","")));
 
-                edges.add(EdgeFactory.create(vid, edgeid));
+                edges.add(EdgeFactory.create(vid, edgeW));
             }
             return edges;
         }
