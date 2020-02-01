@@ -1,85 +1,31 @@
 package src;
+
+import org.apache.giraph.graph.Vertex;
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.Writable;
-import org.apache.hadoop.io.MapWritable;
+import org.apache.giraph.io.formats.TextVertexOutputFormat;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-
-public class VertexValue implements Writable
+public class LPVertexTextOutputFormat  extends TextVertexOutputFormat <LongWritable, VertexValue, FloatWritable>
 {
-    private long actComm;
-    private HashMap<Long,Float> classes;
-
-    //Constructor
-
-    public VertexValue() {
-
-        this.actComm = 0;
-        this.classes = new HashMap<Long,Float>();
-    }
-
-    public VertexValue(long currentCommunity, HashMap<Long,Float> classes) {
-
-        this.actComm = currentCommunity;
-        this.classes = classes;
-    }
-
     @Override
-    public void write(DataOutput dataOutput) throws IOException
+    public TextVertexWriter createVertexWriter(TaskAttemptContext taskAttemptContext) throws IOException, InterruptedException
     {
-        dataOutput.writeLong(this.actComm);
-
-        dataOutput.writeInt(this.classes.size());
-
-        for(Long c:classes.keySet())
-        {
-            dataOutput.writeLong(c);
-            dataOutput.writeFloat(classes.get(c));
-        }
+        return new LPTextVertexLineWriter();
     }
 
-    @Override
-    public void readFields(DataInput dataInput) throws IOException
+    private class LPTextVertexLineWriter extends TextVertexWriterToEachLine
     {
-        this.actComm = dataInput.readLong();
-        int size = dataInput.readInt();
-
-        for (int i = 0; i < size; i++)
+        @Override
+        protected Text convertVertexToLine(Vertex<LongWritable, VertexValue, FloatWritable> vertex) throws IOException
         {
-            this.classes.put(dataInput.readLong(),dataInput.readFloat());
+            StringBuilder sb = new StringBuilder(vertex.getId().toString());
+            sb.append(" ");
+            sb.append(vertex.getValue().getActualCommunity().get());
+            return new Text(sb.toString());
         }
     }
-
-    // Change methods
-
-    public void setActualCommunity(LongWritable actComm) {
-        this.actComm  = actComm.get();
-    }
-
-    public void setClasses(HashMap<Long,Float> c) {
-        for (Long key:c.keySet())
-        {
-            Float newV = c.get(key);
-            if(this.classes.containsKey(key))
-            {
-                newV+=classes.get(key);
-            }
-            classes.put(key,newV);
-        }
-    }
-
-    // Get methods
-    public LongWritable getActualCommunity() {
-        return new LongWritable(this.actComm);
-    }
-
-    public HashMap<Long,Float> getClassTable() {
-        return new HashMap<Long,Float>(this.classes);
-    }
-
 }
