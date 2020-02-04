@@ -36,6 +36,8 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
 
     public void compute(Vertex<LongWritable, VertexValue, FloatWritable> vertex, Iterable<MapWritable> messages) throws IOException
     {
+        System.out.println("Nanoi:" + System.nanoTime());
+        System.out.println("Milii:" + System.currentTimeMillis());
         // Superstep == 0
         if (getSuperstep() == 0)
         {
@@ -58,12 +60,12 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
 
                 sendMessage(edge.getTargetVertexId(), map);                
             }
-            System.out.println("Sup0:");
-            System.out.println("ID: " + vertex.getId().toString() + " Community: " + vertex.getValue().getActualCommunity().get());
+            //System.out.println("Sup0:");
+            //System.out.println("ID: " + vertex.getId().toString() + " Community: " + vertex.getValue().getActualCommunity().get());
         }
         else {
-            System.out.println("Sup"+getSuperstep()+":");
-            System.out.println("ID: " + vertex.getId().toString() + " Community: " + vertex.getValue().getActualCommunity().get());
+            //System.out.println("Sup"+getSuperstep()+":");
+            //System.out.println("ID: " + vertex.getId().toString() + " Community: " + vertex.getValue().getActualCommunity().get());
             // No messages
             if (!messages.iterator().hasNext())
             {
@@ -108,6 +110,9 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                     //make sure the class is not rotating
                     Long minHistory = getMinMostFrequent(vertex.getValue().getClassHistory());
                     if(minHistory!=Long.MAX_VALUE){
+                        if(minHistory==currClass.get()){
+                            changed = false;
+                        }
                         maxClass = minHistory;
                     }
                 }
@@ -142,6 +147,8 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                 vertex.voteToHalt();
             }
         }
+        System.out.println("Nanof:" + System.nanoTime());
+        System.out.println("Milif:" + System.currentTimeMillis());
     }
 
     //Most frequent label
@@ -152,10 +159,10 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
 
        for (Long key: mapMess.keySet())
        {
-           if(mapMess.get(key) >= maxValue)
+           if(mapMess.get(key) > maxValue)
            {
-               maxClass = key;
-               maxValue = mapMess.get(key);
+                maxClass = key;
+                maxValue = mapMess.get(key);
            }
        }
     return maxClass;

@@ -1,5 +1,5 @@
-filename := ./data/GGSN-Giraph.txt
-filename_hdfs := GGSN-Giraph.txt
+filename := ./data/SPN-Giraph.txt
+filename_hdfs := SPN-Giraph.txt
 java := src/*.java
 java_name := LP
 run_container:
@@ -20,4 +20,9 @@ run:
 #podemos cambiar el directorio de output en hdfs
 result:
 	$(eval containerid := $(shell docker ps -a -q))
-	docker exec -it $(containerid) bash -c "/usr/local/hadoop/bin/hdfs dfs -cat /user/root/lp-output1/*"
+	docker exec -it $(containerid) bash -c "/usr/local/hadoop/bin/hdfs dfs -cat /user/root/lp-output/*"
+
+download:
+	$(eval containerid := $(shell docker ps -a -q))
+	docker exec -it $(containerid) bash -c "/usr/local/hadoop/bin/hdfs dfs -get /user/root/lp-output/* myhome/results/."
+	docker exec -it $(containerid) bash -c "cp -r /usr/local/hadoop/logs/userlogs/* myhome/results/."
