@@ -1,7 +1,8 @@
-filename := ./data/SPN-Giraph.txt
-filename_hdfs := SPN-Giraph.txt
+filename := ./data/soc-sign-bitcoinalpha-Giraph.txt
+filename_hdfs := soc-sign-bitcoinalpha-Giraph.txt
 java := src/*.java
 java_name := LP
+dir_hdfs := /user/root/lp-output15
 run_container:
 	docker run --volume $(shell pwd):/myhome --rm --interactive --tty uwsampa/giraph-docker
 compile:
@@ -15,14 +16,14 @@ data_hdfs:
 
 run:
 	$(eval containerid := $(shell docker ps -a -q))
-	docker exec -it $(containerid) bash -c "cd /myhome/ && /usr/local/hadoop/bin/hadoop jar myjar.jar org.apache.giraph.GiraphRunner src.$(java_name) --yarnjars myjar.jar --workers 1 --vertexInputFormat src.LPVertexTextInputFormat --vertexInputPath ./$(filename_hdfs) -vertexOutputFormat src.LPVertexTextOutputFormat --outputPath /user/root/lp-output"
+	docker exec -it $(containerid) bash -c "cd /myhome/ && /usr/local/hadoop/bin/hadoop jar myjar.jar org.apache.giraph.GiraphRunner src.$(java_name) --yarnjars myjar.jar --workers 1 --vertexInputFormat src.LPVertexTextInputFormat --vertexInputPath ./$(filename_hdfs) -vertexOutputFormat src.LPVertexTextOutputFormat --outputPath $(dir_hdfs)"
 
 #podemos cambiar el directorio de output en hdfs
 result:
 	$(eval containerid := $(shell docker ps -a -q))
-	docker exec -it $(containerid) bash -c "/usr/local/hadoop/bin/hdfs dfs -cat /user/root/lp-output/*"
+	docker exec -it $(containerid) bash -c "/usr/local/hadoop/bin/hdfs dfs -cat $(dir_hdfs)/*"
 
 download:
 	$(eval containerid := $(shell docker ps -a -q))
-	docker exec -it $(containerid) bash -c "/usr/local/hadoop/bin/hdfs dfs -get /user/root/lp-output/* myhome/results/."
+	docker exec -it $(containerid) bash -c "/usr/local/hadoop/bin/hdfs dfs -get $(dir_hdfs)/* myhome/results/."
 	docker exec -it $(containerid) bash -c "cp -r /usr/local/hadoop/logs/userlogs/* myhome/results/."

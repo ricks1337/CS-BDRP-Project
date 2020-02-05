@@ -101,14 +101,14 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                 
                 // get classes
                 LongWritable currClass = vertex.getValue().getActualCommunity();
-                Long maxClass = getMostFrequent(vertex.getValue().getClassTable());
+                Long maxClass = vertex.getValue().getClassMostFrequent();
                 //registers class in history
                 vertex.getValue().setHistory(maxClass);
 
                 if (currClass.get()!=maxClass) {
                     changed = true;
                     //make sure the class is not rotating
-                    Long minHistory = getMinMostFrequent(vertex.getValue().getClassHistory());
+                    Long minHistory = vertex.getValue().getHistoryMinMostFrequent();
                     if(minHistory!=Long.MAX_VALUE){
                         if(minHistory==currClass.get()){
                             changed = false;
@@ -151,34 +151,6 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
         System.out.println("Milif:" + System.currentTimeMillis());
     }
 
-    //Most frequent label
-    private Long getMostFrequent(HashMap<Long,Float> mapMess)
-    {
-       Long maxClass = Long.MIN_VALUE;
-       Float maxValue = Float.MIN_VALUE;
-
-       for (Long key: mapMess.keySet())
-       {
-           if(mapMess.get(key) > maxValue)
-           {
-                maxClass = key;
-                maxValue = mapMess.get(key);
-           }
-       }
-    return maxClass;
-    }
-
-    private Long getMinMostFrequent(HashMap<Long,Integer> history)
-    {
-        Long minMostFrequent = Long.MAX_VALUE;
-        for (Long key: history.keySet())
-        {
-           if(history.get(key) >= 10 && key<minMostFrequent)
-           {
-               minMostFrequent = key;
-           }
-        }
-        return minMostFrequent;
-    }
+    
 
 }

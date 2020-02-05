@@ -109,4 +109,34 @@ public class VertexValue implements Writable
         return new HashMap<Long,Integer>(this.history);
     }
 
+    //Most frequent label
+    public Long getClassMostFrequent()
+    {
+       Long maxClass = this.actComm;
+       Float maxValue = Float.MIN_VALUE;
+
+       for (Long key: this.classes.keySet())
+       {
+           if(this.classes.get(key) > maxValue)
+           {
+                maxClass = key;
+                maxValue = this.classes.get(key);
+           }
+       }
+    return maxClass;
+    }
+
+    public Long getHistoryMinMostFrequent()
+    {
+        Long minMostFrequent = Long.MAX_VALUE;
+        for (Long key: this.history.keySet())
+        {
+           if(this.history.get(key) >= 10 && key<minMostFrequent)
+           {
+               minMostFrequent = key;
+           }
+        }
+        return minMostFrequent;
+    }
+
 }
