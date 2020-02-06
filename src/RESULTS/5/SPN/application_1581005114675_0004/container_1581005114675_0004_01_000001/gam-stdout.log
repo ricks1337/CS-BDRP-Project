@@ -1,0 +1,49 @@
+2020-02-06 11:13:57,596 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:main(421)) - Starting GitaphAM 
+2020-02-06 11:13:59,667 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:<init>(168)) - GiraphAM  for ContainerId container_1581005114675_0004_01_000001 ApplicationAttemptId appattempt_1581005114675_0004_000001
+2020-02-06 11:13:59,755 INFO  [main] client.RMProxy (RMProxy.java:createRMProxy(92)) - Connecting to ResourceManager at /0.0.0.0:8030
+2020-02-06 11:13:59,797 INFO  [main] impl.NMClientAsyncImpl (NMClientAsyncImpl.java:serviceInit(107)) - Upper bound of the thread pool size is 500
+2020-02-06 11:13:59,799 INFO  [main] impl.ContainerManagementProtocolProxy (ContainerManagementProtocolProxy.java:<init>(78)) - yarn.client.max-nodemanagers-proxies : 500
+2020-02-06 11:14:00,030 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:setupContainerAskForRM(279)) - Requested container ask: Capability[<memory:1024, vCores:0>]Priority[10]
+2020-02-06 11:14:00,041 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:setupContainerAskForRM(279)) - Requested container ask: Capability[<memory:1024, vCores:0>]Priority[10]
+2020-02-06 11:14:00,042 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:run(185)) - Wait to finish ..
+2020-02-06 11:14:02,085 INFO  [AMRM Heartbeater thread] impl.AMRMClientImpl (AMRMClientImpl.java:populateNMTokens(299)) - Received new token for : c3cb13bb66a8:46663
+2020-02-06 11:14:02,087 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersAllocated(605)) - Got response from RM for container ask, allocatedCnt=1
+2020-02-06 11:14:02,088 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersAllocated(608)) - Total allocated # of container so far : 1 allocated out of 2 required.
+2020-02-06 11:14:02,088 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:startContainerLaunchingThreads(359)) - Launching command on a new container., containerId=container_1581005114675_0004_01_000002, containerNode=c3cb13bb66a8:46663, containerNodeURI=c3cb13bb66a8:8042, containerResourceMemory=1024
+2020-02-06 11:14:02,090 INFO  [pool-4-thread-1] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:buildContainerLaunchContext(492)) - Setting up container launch container for containerid=container_1581005114675_0004_01_000002
+2020-02-06 11:14:02,103 INFO  [pool-4-thread-1] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:buildContainerLaunchContext(498)) - Conatain launch Commands :java -Xmx1024M -Xms1024M -cp .:${CLASSPATH} org.apache.giraph.yarn.GiraphYarnTask 1581005114675 4 2 1 1><LOG_DIR>/task-2-stdout.log 2><LOG_DIR>/task-2-stderr.log 
+2020-02-06 11:14:02,104 INFO  [pool-4-thread-1] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:buildContainerLaunchContext(518)) - Setting username in ContainerLaunchContext to: root
+2020-02-06 11:14:02,754 INFO  [pool-4-thread-1] yarn.YarnUtils (YarnUtils.java:addFsResourcesToMap(72)) - Adding myjar.jar to LocalResources for export.to hdfs://c3cb13bb66a8:9000/user/root/giraph_yarn_jar_cache/application_1581005114675_0004/myjar.jar
+2020-02-06 11:14:02,821 INFO  [pool-4-thread-1] yarn.YarnUtils (YarnUtils.java:addFileToResourceMap(160)) - Registered file in LocalResources :: hdfs://c3cb13bb66a8:9000/user/root/giraph_yarn_jar_cache/application_1581005114675_0004/myjar.jar
+2020-02-06 11:14:02,821 WARN  [pool-4-thread-1] yarn.YarnUtils (YarnUtils.java:addFsResourcesToMap(81)) - Job jars (-yj option) didn't include giraph-core.
+2020-02-06 11:14:02,824 INFO  [pool-4-thread-1] yarn.YarnUtils (YarnUtils.java:addFileToResourceMap(160)) - Registered file in LocalResources :: hdfs://c3cb13bb66a8:9000/user/root/giraph_yarn_jar_cache/application_1581005114675_0004/giraph-conf.xml
+2020-02-06 11:14:02,839 INFO  [org.apache.hadoop.yarn.client.api.async.impl.NMClientAsyncImpl #0] impl.NMClientAsyncImpl (NMClientAsyncImpl.java:run(531)) - Processing Event EventType: START_CONTAINER for Container container_1581005114675_0004_01_000002
+2020-02-06 11:14:02,842 INFO  [org.apache.hadoop.yarn.client.api.async.impl.NMClientAsyncImpl #0] impl.ContainerManagementProtocolProxy (ContainerManagementProtocolProxy.java:newProxy(212)) - Opening proxy : c3cb13bb66a8:46663
+2020-02-06 11:14:02,894 INFO  [org.apache.hadoop.yarn.client.api.async.impl.NMClientAsyncImpl #1] impl.NMClientAsyncImpl (NMClientAsyncImpl.java:run(531)) - Processing Event EventType: QUERY_CONTAINER for Container container_1581005114675_0004_01_000002
+2020-02-06 11:14:03,091 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersAllocated(605)) - Got response from RM for container ask, allocatedCnt=1
+2020-02-06 11:14:03,092 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersAllocated(608)) - Total allocated # of container so far : 2 allocated out of 2 required.
+2020-02-06 11:14:03,092 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:startContainerLaunchingThreads(359)) - Launching command on a new container., containerId=container_1581005114675_0004_01_000003, containerNode=c3cb13bb66a8:46663, containerNodeURI=c3cb13bb66a8:8042, containerResourceMemory=1024
+2020-02-06 11:14:03,093 INFO  [pool-4-thread-2] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:buildContainerLaunchContext(492)) - Setting up container launch container for containerid=container_1581005114675_0004_01_000003
+2020-02-06 11:14:03,093 INFO  [pool-4-thread-2] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:buildContainerLaunchContext(498)) - Conatain launch Commands :java -Xmx1024M -Xms1024M -cp .:${CLASSPATH} org.apache.giraph.yarn.GiraphYarnTask 1581005114675 4 3 1 1><LOG_DIR>/task-3-stdout.log 2><LOG_DIR>/task-3-stderr.log 
+2020-02-06 11:14:03,093 INFO  [pool-4-thread-2] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:buildContainerLaunchContext(518)) - Setting username in ContainerLaunchContext to: root
+2020-02-06 11:14:03,094 INFO  [org.apache.hadoop.yarn.client.api.async.impl.NMClientAsyncImpl #2] impl.NMClientAsyncImpl (NMClientAsyncImpl.java:run(531)) - Processing Event EventType: START_CONTAINER for Container container_1581005114675_0004_01_000003
+2020-02-06 11:14:03,100 INFO  [org.apache.hadoop.yarn.client.api.async.impl.NMClientAsyncImpl #3] impl.NMClientAsyncImpl (NMClientAsyncImpl.java:run(531)) - Processing Event EventType: QUERY_CONTAINER for Container container_1581005114675_0004_01_000003
+2020-02-06 11:14:22,170 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersCompleted(571)) - Got response from RM for container ask, completedCnt=1
+2020-02-06 11:14:22,171 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersCompleted(574)) - Got container status for containerID=container_1581005114675_0004_01_000003, state=COMPLETE, exitStatus=0, diagnostics=
+2020-02-06 11:14:22,172 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersCompleted(596)) - After completion of one conatiner. current status is: completedCount :1 containersToLaunch :2 successfulCount :1 failedCount :0
+2020-02-06 11:14:24,179 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersCompleted(571)) - Got response from RM for container ask, completedCnt=1
+2020-02-06 11:14:24,180 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersCompleted(574)) - Got container status for containerID=container_1581005114675_0004_01_000002, state=COMPLETE, exitStatus=0, diagnostics=
+2020-02-06 11:14:24,180 INFO  [AMRM Callback Handler Thread] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:onContainersCompleted(594)) - All container compeleted. done = true
+2020-02-06 11:14:24,370 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:run(194)) - Done true
+2020-02-06 11:14:24,370 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:run(198)) - Forcefully terminating executors with done =:true
+2020-02-06 11:14:24,371 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:finish(212)) - Application completed. Stopping running containers
+2020-02-06 11:14:24,405 INFO  [main] impl.ContainerManagementProtocolProxy (ContainerManagementProtocolProxy.java:mayBeCloseProxy(145)) - Closing proxy : c3cb13bb66a8:46663
+2020-02-06 11:14:24,405 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:finish(217)) - Application completed. Signalling finish to RM
+2020-02-06 11:14:24,417 INFO  [main] impl.AMRMClientImpl (AMRMClientImpl.java:unregisterApplicationMaster(321)) - Waiting for application to be successfully unregistered.
+2020-02-06 11:14:24,522 INFO  [main] yarn.GiraphApplicationMaster (GiraphApplicationMaster.java:main(442)) - Giraph Application Master completed successfully. exiting
+2020-02-06 11:14:24,523 INFO  [AMRM Callback Handler Thread] impl.AMRMClientAsyncImpl (AMRMClientAsyncImpl.java:run(277)) - Interrupted while waiting for queue
+java.lang.InterruptedException
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2017)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2052)
+	at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+	at org.apache.hadoop.yarn.client.api.async.impl.AMRMClientAsyncImpl$CallbackHandlerThread.run(AMRMClientAsyncImpl.java:275)

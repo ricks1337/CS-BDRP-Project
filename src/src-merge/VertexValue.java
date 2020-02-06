@@ -131,7 +131,7 @@ public class VertexValue implements Writable
         Long minMostFrequent = Long.MAX_VALUE;
         for (Long key: this.history.keySet())
         {
-           if(this.history.get(key) >= 10 && key<minMostFrequent)
+           if(this.history.get(key) >= 15 && key<minMostFrequent)
            {
                minMostFrequent = key;
            }

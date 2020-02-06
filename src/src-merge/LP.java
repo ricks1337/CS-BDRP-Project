@@ -36,8 +36,8 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
 
     public void compute(Vertex<LongWritable, VertexValue, FloatWritable> vertex, Iterable<MapWritable> messages) throws IOException
     {
-        System.out.println("Nanoi:" + System.nanoTime());
-        System.out.println("Milii:" + System.currentTimeMillis());
+        //System.out.println("Nanoi:" + System.nanoTime());
+        //System.out.println("Milii:" + System.currentTimeMillis());
         // Superstep == 0
         if (getSuperstep() == 0)
         {
@@ -147,8 +147,8 @@ public class LP extends BasicComputation<LongWritable, VertexValue, FloatWritabl
                 vertex.voteToHalt();
             }
         }
-        System.out.println("Nanof:" + System.nanoTime());
-        System.out.println("Milif:" + System.currentTimeMillis());
+        //System.out.println("Nanof:" + System.nanoTime());
+        //System.out.println("Milif:" + System.currentTimeMillis());
     }
 
     

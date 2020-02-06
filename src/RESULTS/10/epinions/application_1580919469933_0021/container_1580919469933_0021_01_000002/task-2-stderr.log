@@ -1,0 +1,22 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/tmp/hadoop-root/nm-local-dir/usercache/root/appcache/application_1580919469933_0021/filecache/11/myjar.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop-2.4.1/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Exception in thread "org.apache.giraph.master.MasterThread" java.lang.IllegalStateException: java.lang.RuntimeException: BspServiceMaster (YARN profile) is FAILING this task, throwing exception to end job run.
+	at org.apache.giraph.master.MasterThread.run(MasterThread.java:194)
+Caused by: java.lang.RuntimeException: BspServiceMaster (YARN profile) is FAILING this task, throwing exception to end job run.
+	at org.apache.giraph.master.BspServiceMaster.failJob(BspServiceMaster.java:356)
+	at org.apache.giraph.master.BspServiceMaster.getLastGoodCheckpoint(BspServiceMaster.java:1294)
+	at org.apache.giraph.master.MasterThread.run(MasterThread.java:148)
+Caused by: java.io.FileNotFoundException: File hdfs://1ea6fa3c47e4:9000/user/root/_bsp/_checkpoints/giraph_yarn_application_1580919469933_0021 does not exist.
+	at org.apache.hadoop.hdfs.DistributedFileSystem.listStatusInternal(DistributedFileSystem.java:654)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.access$600(DistributedFileSystem.java:102)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$14.doCall(DistributedFileSystem.java:712)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$14.doCall(DistributedFileSystem.java:708)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.listStatus(DistributedFileSystem.java:708)
+	at org.apache.hadoop.fs.FileSystem.listStatus(FileSystem.java:1483)
+	at org.apache.hadoop.fs.FileSystem.listStatus(FileSystem.java:1523)
+	at org.apache.giraph.master.BspServiceMaster.getLastGoodCheckpoint(BspServiceMaster.java:1276)
+	... 1 more
