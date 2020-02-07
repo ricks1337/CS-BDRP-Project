@@ -1,8 +1,8 @@
-filename := ./data/GGSN-Giraph.txt
-filename_hdfs := GGSN-Giraph.txt
+filename := ./data/soc-sign-bitcoinotc-Giraph.txt
+filename_hdfs := soc-sign-bitcoinotc-Giraph.txt
 java := src/*.java
 java_name := LP
-dir_hdfs := /user/root/lp-output
+dir_hdfs := /user/root/lp-output6
 run_container:
 	docker run --volume $(shell pwd):/myhome --rm --interactive --tty uwsampa/giraph-docker
 compile:
